@@ -51,7 +51,15 @@ class Board:
         self.spaces = [[None] * self.columns] * (self.columns - len(self.spaces)) + self.spaces
 
     def blit(self, other):
-        return [[k if l is None else l for k, l in zip(i, j)] for i, j in zip(self.spaces, other.spaces)]
+        return [[k or l for k, l in zip(i, j)] for i, j in zip(self.spaces, other.spaces)]
+
+    @staticmethod
+    def colliding(board1, board2):
+        for i, j in zip(board1.spaces, board2.spaces):
+            for k, l in zip(i, j):
+                if k and l:
+                    return True
+        return False
 
 
 b = None
