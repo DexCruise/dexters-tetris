@@ -1,9 +1,7 @@
 from typing import Optional
 
 Colour = Optional[tuple[int, int, int]]
-
-black = 1, 1, 1
-
+black = 0, 0, 0
 
 class Board:
     def __init__(self, rows: int, columns: int):
@@ -40,6 +38,15 @@ class Board:
             else:  # if there are no empty pixels, clear the row
                 self.spaces.pop(i)
 
+        for i, row in enumerate(self.spaces):
+            # check row for fullness
+            for j, pixel in enumerate(row):  # enumerate over pixels in row
+                # break if any pixel has empty spaces
+                if pixel is not None:
+                    break
+            else:  # if there are no empty pixels, clear the row
+                self.spaces.pop(i)
+
         # add enough rows to top
         self.spaces = [[None] * self.columns] * (self.columns - len(self.spaces)) + self.spaces
 
@@ -48,7 +55,7 @@ class Board:
 
 
 b = None
-w = 1, 1, 1
+w = 255, 255, 255
 
 board = Board(5, 5)
 
@@ -81,3 +88,14 @@ print(repr(board))
 # |[]      []|
 # |[][]  [][]|
 # |----------|
+
+piece = Board(5, 5)
+piece.spaces = [[w, w, b, b, b], [b, b, b, b, b], [b, b, b, b, b], [b, b, b, b, b], [b, b, b, b, b]]
+
+board.spaces = board.blit(piece)
+
+print(repr(board))
+
+board.row_fall()
+
+print(repr(board))
